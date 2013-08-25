@@ -33,7 +33,6 @@ def main():
             mav_msg = msrc.recv_match()
             if mav_msg is not None:
                 topic = mav_msg.get_type()
-                print topic
                 zmq_socket.send(topic,zmq.SNDMORE)
                 zmq_socket.send_pyobj(mav_msg)
     except Exception, e:
