@@ -7,7 +7,7 @@ def main():
     parser = ArgumentParser()
     parser.add_argument("--device", help="MAVLink device to add to zmq", required=True)
     parser.add_argument("--zmq", help="zmq url", required=True)
-
+    parser.add_argument("--prefix", help="Prefix for topic for this device", default="unnamed")
     args = parser.parse_args()
 
     try:
@@ -32,7 +32,7 @@ def main():
         while True:
             mav_msg = msrc.recv_match()
             if mav_msg is not None:
-                topic = mav_msg.get_type()
+                topic = "%s.%s"%(args.prefix,mav_msg.get_type())
                 zmq_socket.send(topic,zmq.SNDMORE)
                 zmq_socket.send_pyobj(mav_msg)
     except Exception, e:
