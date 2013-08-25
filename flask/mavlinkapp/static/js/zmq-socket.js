@@ -4,11 +4,12 @@ $(function() {
         socket = io.connect('/mavlink');
 
     socket.on('connect', function () {
-        $('#rawlog').addClass('connected');
+//        $('#rawlog').addClass('connected');
+        socket.emit('stream zmq', '');
     });
 
     socket.on('announcement', function (msg) {
-        $('#lines').append($('<p>').append($('<em>').text(msg)));
+        $('#lines').prepend($('<p>').append($('<em>').text(msg)));
     });
     socket.on('normal_msg', function (msg) {
         $('#lines').append($('<p>').text(msg));
@@ -23,14 +24,15 @@ $(function() {
     socket.on('error', function (e) {
         message('System', e ? e : 'A unknown error occurred');
     });
-    function message (from, msg) {
-        $('#lines').append($('<p>').append($('<b>').text(from), msg));
-    }
 
     // DOM manipulation
     $(function () {
-        $('#send-message').submit(function () {
-            socket.emit('user message', $('#message').val());
+        $('#subscribe').submit(function () {
+            socket.emit('zmq sub', $('#sub_topic').val());
+            return false;
+        });
+        $('#unsubscribe').submit(function () {
+            socket.emit('zmq unsub', $('#unsub_topic').val());
             return false;
         });
     });
