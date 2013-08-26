@@ -7,14 +7,16 @@
 	<div class="row">
 		<canvas id="tutorial" style="border: 2px solid blue" width="500" height="500"></canvas>
 	</div>
+	<div class="row">
+	<div id="imuplot" style="width:600px;height:300px;"></div>
+	</div>
  </div>
 {% endblock %}
 {% block js_end %}
 {{ super() }}
 <script src="/static/js/socketio/socket.io.min.js"></script>
-<script src="/static/js/zmq-socket.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/flot/0.8.1/jquery.flot.min.js"></script>
 <script src="/static/c3dl/c3dapi.js" ></script>
+<script src="/static/js/zmq-socket.js"></script>
 <script src="/static/js/3dviz.js"></script>
-
-
 {% endblock %}
