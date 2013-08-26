@@ -6,7 +6,7 @@ var duck;
 var cam = new c3dl.FreeCamera();
 
 var imu = {'roll':0,'pitch':0,'yaw':0}
-var imu_hist = {'roll':[0],'pitch':[0]'yaw':[0]}
+var imu_hist = {'roll':[0],'pitch':[0],'yaw':[0]}
 var maxpoints = 300
 // The program main
 function canvasMain(canvasName){
