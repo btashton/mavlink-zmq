@@ -3,26 +3,33 @@
 {% block container %}
 <div class="starter-template">
     <h1>Raw Data Stream</h1>
-        <p class="lead">Placeholder for raw data stream.</p>
-        <div class="row">
-            <div class="col-lg-6">
-                Subscribe topic prefix:
-                <form id="subscribe">
-                    <input id="sub_topic">
-                    <button>Subscribe</button>
-                </form>
-                <br/>
-                Unsubscribe topic prefix:
-                <form id="unsubscribe">
-                    <input id="unsub_topic">
-                    <button>Unsubscribe</button>
-                </form>
+	<p class="lead">Placeholder for raw data stream.</p>
+	<div class="row">
+            <div class="col-lg-6">         
+				<form id="subscribe"  role="form">
+				  <div class="form-group">
+					<label class="sr-only" for="sub_topic">Subscribe topic</label>
+					<input class="form-control" id="sub_topic" placeholder="Enter topic">
+				  </div>
+				  <button type="submit" class="btn btn-default">Subscribe</button>
+				</form>
+				<br/>
+				<form id="unsubscribe"  role="form">
+				  <div class="form-group">
+					<label class="sr-only" for="unsub_topic">Unsubscribe topic</label>
+					<input class="form-control" id="unsub_topic" placeholder="Enter topic">
+				  </div>
+				  <button type="submit" class="btn btn-default">Unsubscribe</button>
+				</form>
+				<form id="cleardata"  role="form">
+				  <button type="submit" class="btn btn-default">Clear Data</button>
+				</form>
             </div>
             <div id="messages" class="col-lg-6">
                 <div id="lines"></div>
             </div>
         </div>
-    </div>
+ </div>
 {% endblock %}
 {% block js_end %}
 {{ super() }}

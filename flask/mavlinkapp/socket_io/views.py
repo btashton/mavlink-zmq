@@ -55,7 +55,7 @@ class MAVLinkNamespace(BaseNamespace, BroadcastMixin):
                 gevent.sleep(0.01)
                 topic = self.sock.recv(zmq.DONTWAIT)
                 messagedata = self.sock.recv_pyobj()
-                self.log('MAVLink msg: %s' % messagedata)
+                #self.log('MAVLink msg: %s' % messagedata)
                 self.emit('announcement', str(messagedata))
             except Exception, e:
                 if e.errno == zmq.EAGAIN:

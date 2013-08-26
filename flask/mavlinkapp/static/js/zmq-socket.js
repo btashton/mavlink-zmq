@@ -4,7 +4,6 @@ $(function() {
         socket = io.connect('/mavlink');
 
     socket.on('connect', function () {
-//        $('#rawlog').addClass('connected');
         socket.emit('stream zmq', '');
     });
 
@@ -29,10 +28,16 @@ $(function() {
     $(function () {
         $('#subscribe').submit(function () {
             socket.emit('zmq sub', $('#sub_topic').val());
+            $('#sub_topic').val('');
             return false;
         });
         $('#unsubscribe').submit(function () {
             socket.emit('zmq unsub', $('#unsub_topic').val());
+            $('#unsub_topic').val('');
+            return false;
+        });
+        $('#cleardata').submit(function () {
+            $('#lines').empty();
             return false;
         });
     });
