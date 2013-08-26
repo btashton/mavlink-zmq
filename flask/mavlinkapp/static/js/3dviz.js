@@ -7,7 +7,7 @@ var cam = new c3dl.FreeCamera();
 
 var imu = {'roll':0,'pitch':0,'yaw':0}
 var imu_hist = {'roll':[0],'pitch':[0],'yaw':[0]}
-var maxpoints = 300
+var maxpoints = 300;
 // The program main
 function canvasMain(canvasName){
 
@@ -54,7 +54,7 @@ function canvasMain(canvasName){
  // move 200 to the right
  // move 300 up
  // move 500 units out
- cam.setPosition(new Array(000.0, 000.0, 500.0));
+ cam.setPosition(new Array(0.0, 0.0, 500.0));
 
  // Point the camera.
  // Here it is pointed at the same location as
@@ -77,17 +77,17 @@ function update_pos(msg)
 	imu.roll = msg.roll
 	imu.yaw = msg.yaw
 	imu.pitch = msg.pitch
-	if imu_hist.roll.length >= maxpoints
+	if (imu_hist.roll.length >= maxpoints)
 	{
-		imu_hist.roll.slice(1)
-		imu_hist.yaw.slice(1)
-		imu_hist.pitch.slice(1)
+		imu_hist.roll = imu_hist.roll.slice(1)
+		imu_hist.yaw = imu_hist.yaw.slice(1)
+		imu_hist.pitch = imu_hist.pitch.slice(1)
 	}
 	imu_hist.roll.push(msg.roll)
 	imu_hist.yaw.push(msg.yaw)
 	imu_hist.pitch.push(msg.pitch)
 
-	update_plot();
+	update_plot(imu_hist.yaw);
 }
 
 
@@ -116,12 +116,16 @@ $(function() {
 // setup plot
 var options = {
 	series: { shadowSize: 0 }, // drawing is faster without shadows
-	yaxis: { min: 0, max: 100 },
+	yaxis: { min: -3, max: 3 },
 	xaxis: { show: false }
 };
-var plot = $.plot($("#imuplot"), imu_hist.roll, options);
+var plot = $.plot($("#imuplot"), [], options);
 
-function updateplot() {
-	plot.setData(imu_hist.roll);
+function update_plot(data) {
+	res = [];
+	for (var i = 0; i < data.length; ++i)
+		res.push([i, data[i]])
+	plot.setData([res]);
 	plot.draw();
 }
+
