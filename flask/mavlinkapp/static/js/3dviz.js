@@ -1,16 +1,11 @@
-// Tutorial 2: the javascript
-// The models used need to be parsed before the page
-// render. This code will parse the model files
-// and when this is complete the parser will call the
-// main. The argument being passed - "tutorial" -
-// is the id of the canvas element on the html page.
 
 c3dl.addMainCallBack(canvasMain, "tutorial");
 c3dl.addModel("/static/model/duck.dae");
 var duck;
-var roll = 0;
-var pitch = 0;
-var yaw = 0;
+
+var imu = {'roll':0,'pitch':0,'yaw':0}
+
+
 // The program main
 function canvasMain(canvasName){
 
@@ -73,7 +68,34 @@ function canvasMain(canvasName){
  }
 }
 
-function update_pos()
+function update_pos(msg)
 {
-	
+	duck.roll(imu.roll-msg.roll);
+	duck.pitch(imu.pitch-msg.pitch);
+	duck.yaw(imu.yaw-msg.yaw)
+	imu.roll = msg.roll
+	imu.yaw = msg.yaw
+	imu.pitch = msg.pitch
 }
+
+
+$(function() {
+
+    var WEB_SOCKET_SWF_LOCATION = '/static/js/socketio/WebSocketMain.swf',
+        socket = io.connect('/mavlink');
+	
+	//After connecting to socketio open a stream and subscribe to
+	//ATTITUDE information
+    socket.on('connect', function () {
+        socket.emit('stream zmq', '');
+        socket.emit('zmq sub', 'uav1.ATTITUDE');
+    });
+
+    socket.on('announcement', function (msg) {
+        json_msg = $.parseJSON(msg);
+        if (json_msg.mavpackettype == 'ATTITUDE')
+        {
+			update_pos(json_msg);
+		}
+    });
+});

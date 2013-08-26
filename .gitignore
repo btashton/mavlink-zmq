@@ -40,3 +40,7 @@ nosetests.xml
 
 # Swap files
 *.swp
+
+#MAVLink Logs
+*.tlog
+*.tlog.raw

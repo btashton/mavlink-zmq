@@ -4,6 +4,7 @@ from socketio.mixins import BroadcastMixin
 import gevent
 from gevent import monkey
 import zmq
+import json
 
 from flask import Flask, Blueprint, Response, request, render_template, url_for, redirect
 from flask import current_app
@@ -56,7 +57,7 @@ class MAVLinkNamespace(BaseNamespace, BroadcastMixin):
                 topic = self.sock.recv(zmq.DONTWAIT)
                 messagedata = self.sock.recv_pyobj()
                 #self.log('MAVLink msg: %s' % messagedata)
-                self.emit('announcement', str(messagedata))
+                self.emit('announcement', json.dumps(messagedata.to_dict()))
             except Exception, e:
                 if e.errno == zmq.EAGAIN:
                     #this error number is caught if a msg is not recv
